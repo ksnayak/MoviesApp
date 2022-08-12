@@ -14,6 +14,7 @@ import dateFormat from 'dateformat';
 
 import {getMovies} from '../services/services';
 import Colors from '../configs/Color';
+import {color} from 'react-native-reanimated';
 
 const placeholderImage = require('../assets/images/placeholder.png');
 const height = Dimensions.get('screen').height;
@@ -34,7 +35,7 @@ const Detail = ({route, navigation}) => {
   return (
     <>
       {loaded && (
-        <View>
+        <View style={{paddingBottom: 10, backgroundColor: Colors.white}}>
           <ScrollView>
             <Image
               resizeMode="stretch"
@@ -119,16 +120,6 @@ const styles = StyleSheet.create({
   release: {
     color: Colors.black,
     fontWeight: 'bold',
-  },
-  playButton: {
-    position: 'absolute',
-    top: -25,
-    right: 20,
-  },
-  videoModal: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

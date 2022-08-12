@@ -3,6 +3,8 @@ import {View, Text, FlatList, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 
 import Card from './Card';
+import {color} from 'react-native-reanimated';
+import Colors from '../configs/Color';
 
 const propTypes = {
   title: PropTypes.string,
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'black',
+    color: Colors.white,
     padding: 10,
     paddingBottom: 15,
   },

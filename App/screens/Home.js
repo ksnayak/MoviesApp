@@ -104,14 +104,13 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <>
-      {console.log(moviesImages)}
+    <View style={{backgroundColor: Colors.primary}}>
       {loaded && !error && (
         <ScrollView>
           {moviesImages && (
             <View style={styles.sliderContainer}>
               <Text>slider</Text>
-              <Carousel
+              {/* <Carousel
                 data={moviesImages}
                 loop={true}
                 autoplay={true}
@@ -121,7 +120,7 @@ const Home = ({navigation}) => {
                 renderItem={({item}) => (
                   <Image source={{uri: item}} resizeMode="cover" />
                 )}
-              />
+              /> */}
             </View>
           )}
           {popularMovies && (
@@ -219,7 +218,7 @@ const Home = ({navigation}) => {
       )}
       {!loaded && <ActivityIndicator size={'large'} />}
       {error && <Error />}
-    </>
+    </View>
   );
 };
 

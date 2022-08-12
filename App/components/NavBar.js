@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  Text,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
@@ -26,15 +27,22 @@ class Navbar extends React.PureComponent {
       <SafeAreaView>
         {main ? (
           <View style={styles.mainNav}>
-            <Image
-              style={styles.logo}
-              source={require('../assets/images/movies.png')}
-            />
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Image
+                style={styles.logo}
+                source={require('../assets/images/movies.png')}
+              />
+              <Text style={styles.greetingText}>Hello</Text>
+            </View>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Search');
               }}>
-              <Icon name={'search-outline'} size={30} color={Colors.white} />
+              <Icon
+                name={'search-outline'}
+                size={30}
+                color={Colors.secondary}
+              />
             </TouchableOpacity>
           </View>
         ) : (
@@ -63,6 +71,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
     alignItems: 'center',
+  },
+  greetingText: {
+    fontSize: 30,
+    fontWeight: '600',
+    color: Colors.tertiary,
+    marginLeft: 20,
   },
 });
 
