@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -6,28 +6,10 @@ import Colors from '../configs/Color';
 import {Avatar} from '@rneui/base/dist/Avatar/Avatar';
 import {useFocusEffect} from '@react-navigation/native';
 const Profile = () => {
-  // const [currentLogInUser, setcurrentLogInUser] = useState(null);
+  const [currentLogInUser, setcurrentLogInUser] = useState('');
 
   const PLACEHOLDER_IMG =
     'https://2dbags.co/wp-content/uploads/revslider/lookbook1-demo_slider/placeholder.jpg';
-
-  // const getUserName = () => {
-  //   const user = auth().currentUser;
-  //   const unsubscribe = firestore()
-  //     .collection('users')
-  //     .where('owner_uid', '==', user.uid)
-  //     .limit(1)
-  //     .onSnapshot(snapshot =>
-  //       snapshot.docs.map(doc => {
-  //         setcurrentLogInUser({
-  //           username: doc.data().username,
-  //         });
-  //       }),
-  //     );
-
-  //   return unsubscribe;
-  // };
-  const [currentLogInUser, setcurrentLogInUser] = useState('');
 
   const getUserName = () => {
     const user = auth().currentUser;
@@ -46,7 +28,6 @@ const Profile = () => {
         }),
       );
     console.log('currentUser', currentLogInUser);
-
     return unsubscribe;
   };
 

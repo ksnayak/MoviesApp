@@ -89,6 +89,7 @@ const SignupForm = ({navigation}) => {
                 keyboardType="email-address"
                 textContentType="emailAddress"
                 autoFocus={true}
+                style={{color: Colors.black}}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
                 value={values.email}
@@ -109,6 +110,7 @@ const SignupForm = ({navigation}) => {
                 placeholderTextColor={Colors.placeholder}
                 autoCapitalize="none"
                 textContentType="username"
+                style={{color: Colors.black}}
                 onChangeText={handleChange('username')}
                 onBlur={handleBlur('username')}
                 value={values.username}
@@ -131,6 +133,7 @@ const SignupForm = ({navigation}) => {
                 autoCorrect={false}
                 secureTextEntry={true}
                 textContentType="password"
+                style={{color: Colors.black}}
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
                 value={values.password}
@@ -155,6 +158,7 @@ const SignupForm = ({navigation}) => {
                 autoCorrect={false}
                 secureTextEntry={true}
                 textContentType="password"
+                style={{color: Colors.black}}
                 onChangeText={handleChange('confirmPassword')}
                 onBlur={handleBlur('confirmPassword')}
                 value={values.confirmPassword}
@@ -175,6 +179,7 @@ const SignupForm = ({navigation}) => {
                 placeholderTextColor={Colors.placeholder}
                 autoCapitalize="none"
                 keyboardType="numeric"
+                style={{color: Colors.black}}
                 onChangeText={handleChange('number')}
                 onBlur={handleBlur('number')}
                 value={values.number}
