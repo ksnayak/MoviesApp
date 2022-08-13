@@ -14,7 +14,6 @@ import dateFormat from 'dateformat';
 
 import {getMovies} from '../services/services';
 import Colors from '../configs/Color';
-import {color} from 'react-native-reanimated';
 
 const placeholderImage = require('../assets/images/placeholder.png');
 const height = Dimensions.get('screen').height;

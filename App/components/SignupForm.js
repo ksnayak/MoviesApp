@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -22,41 +23,50 @@ const SignupForm = ({navigation}) => {
     password: Yup.string()
       .required()
       .min(6, 'Your Password has to have at least 6 characters'),
+    confirmPassword: Yup.string()
+      .required()
+      .min(6, 'Your Password has to have at least 6 characters'),
+    number: Yup.string()
+      .required()
+      .min(10)
+      .max(10, 'A phone number is required'),
   });
 
-  const getRandomProfilePicture = async () => {
-    const response = await fetch('https://randomuser.me/api');
-    const data = await response.json();
-    return data.results[0].picture.large;
-  };
-
-  const onSignup = async (email, password, username) => {
+  const onSignup = async (email, password, username, number) => {
     try {
       const authUser = await auth().createUserWithEmailAndPassword(
         email,
         password,
       );
       console.log('Firebase Signup Successful', email, password);
-      firestore()
-        .collection('users')
-        .doc(authUser.user.email)
-        .set({
-          owner_uid: authUser.user.uid,
-          username: username,
-          email: authUser.user.email,
-          profile_picture: await getRandomProfilePicture(),
-        });
+      firestore().collection('users').doc(authUser.user.email).set({
+        owner_uid: authUser.user.uid,
+        username: username,
+        email: authUser.user.email,
+        phoneNumber: number,
+      });
     } catch (errror) {
       Alert.alert('OOPS!..', errror.message);
     }
   };
 
   return (
-    <View style={styles.wrapper}>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.wrapper}>
       <Formik
-        initialValues={{email: '', username: '', password: ''}}
+        initialValues={{
+          email: '',
+          username: '',
+          password: '',
+          confirmPassword: '',
+          number: '',
+        }}
         onSubmit={values => {
-          onSignup(values.email, values.password, values.username);
+          onSignup(
+            values.email,
+            values.password,
+            values.username,
+            values.number,
+          );
         }}
         validationSchema={SignupFormSchema}
         validateOnMount={true}>
@@ -68,13 +78,13 @@ const SignupForm = ({navigation}) => {
                 {
                   borderColor:
                     values.email.length < 1 || Validator.validate(values.email)
-                      ? '#ccc'
-                      : 'red',
+                      ? Colors.lightGray
+                      : Colors.danger,
                 },
               ]}>
               <TextInput
                 placeholder="Email"
-                placeholderTextColor={'#444'}
+                placeholderTextColor={Colors.placeholder}
                 autoCapitalize="none"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -90,13 +100,13 @@ const SignupForm = ({navigation}) => {
                 {
                   borderColor:
                     1 > values.username.length || values.username.length >= 2
-                      ? '#ccc'
-                      : 'red',
+                      ? Colors.lightGray
+                      : Colors.danger,
                 },
               ]}>
               <TextInput
                 placeholder="Username"
-                placeholderTextColor={'#444'}
+                placeholderTextColor={Colors.placeholder}
                 autoCapitalize="none"
                 textContentType="username"
                 onChangeText={handleChange('username')}
@@ -110,13 +120,13 @@ const SignupForm = ({navigation}) => {
                 {
                   borderColor:
                     1 > values.password.length || values.password.length >= 6
-                      ? '#ccc'
-                      : 'red',
+                      ? Colors.lightGray
+                      : Colors.danger,
                 },
               ]}>
               <TextInput
                 placeholder="Password"
-                placeholderTextColor={'#444'}
+                placeholderTextColor={Colors.placeholder}
                 autoCapitalize="none"
                 autoCorrect={false}
                 secureTextEntry={true}
@@ -124,6 +134,50 @@ const SignupForm = ({navigation}) => {
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
                 value={values.password}
+              />
+            </View>
+            <View
+              style={[
+                styles.inputField,
+                {
+                  borderColor:
+                    1 > values.confirmPassword.length ||
+                    (values.confirmPassword.length >= 6 &&
+                      values.confirmPassword === values.password)
+                      ? Colors.lightGray
+                      : Colors.danger,
+                },
+              ]}>
+              <TextInput
+                placeholder="Confirm Password"
+                placeholderTextColor={Colors.placeholder}
+                autoCapitalize="none"
+                autoCorrect={false}
+                secureTextEntry={true}
+                textContentType="password"
+                onChangeText={handleChange('confirmPassword')}
+                onBlur={handleBlur('confirmPassword')}
+                value={values.confirmPassword}
+              />
+            </View>
+            <View
+              style={[
+                styles.inputField,
+                {
+                  borderColor:
+                    values.number.length <= 10
+                      ? Colors.lightGray
+                      : Colors.danger,
+                },
+              ]}>
+              <TextInput
+                placeholder="Number"
+                placeholderTextColor={Colors.placeholder}
+                autoCapitalize="none"
+                keyboardType="numeric"
+                onChangeText={handleChange('number')}
+                onBlur={handleBlur('number')}
+                value={values.number}
               />
             </View>
             <View style={{alignItems: 'flex-end', marginBottom: 30}}>
@@ -147,13 +201,13 @@ const SignupForm = ({navigation}) => {
           </>
         )}
       </Formik>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginTop: 80,
+    marginTop: 20,
   },
   inputField: {
     borderRadius: 6,

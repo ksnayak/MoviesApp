@@ -104,23 +104,25 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{backgroundColor: Colors.primary}}>
+    <View>
       {loaded && !error && (
         <ScrollView>
           {moviesImages && (
             <View style={styles.sliderContainer}>
-              <Text>slider</Text>
-              {/* <Carousel
+              <Carousel
                 data={moviesImages}
-                loop={true}
-                autoplay={true}
-                height={dimensions.height / 1.5}
-                // scrollAnimationDuration={1000}
-                onSnapToItem={index => console.log('current index:', index)}
+                autoPlay={true}
+                autoPlayInterval={2000}
+                height={Math.round(dimensions.height / 1.6)}
+                width={Math.round(dimensions.width)}
                 renderItem={({item}) => (
-                  <Image source={{uri: item}} resizeMode="cover" />
+                  <Image
+                    source={{uri: item}}
+                    resizeMode="cover"
+                    style={{width: '100%', height: '100%'}}
+                  />
                 )}
-              /> */}
+              />
             </View>
           )}
           {popularMovies && (
@@ -230,6 +232,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 15,
   },
   sliderStyle: {
     height: 0,

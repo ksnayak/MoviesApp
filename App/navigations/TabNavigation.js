@@ -1,10 +1,9 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import HomeStack from './HomeStack';
 import AuthStack from './AuthStack';
@@ -15,9 +14,6 @@ const Tab = createBottomTabNavigator();
 const screenOptions = {
   headerShown: false,
   tabBarShowLabel: false,
-  tabBarStyle: {
-    backgroundColor: Colors.primary,
-  },
   tabBarInactiveTintColor: Colors.white,
   tabBarActiveTintColor: Colors.secondary,
 };
@@ -32,8 +28,6 @@ const TabNavigation = () => {
           tabBarStyle: {
             display: getTabBarVisibility(route),
             backgroundColor: Colors.primary,
-            borderTopEndRadius: 10,
-            borderTopStartRadius: 10,
           },
           tabBarIcon: ({color, size}) => (
             <Ionicons name="home-outline" color={color} size={size} />
@@ -43,7 +37,11 @@ const TabNavigation = () => {
       <Tab.Screen
         name="Auth"
         component={AuthStack}
-        options={{
+        options={({route}) => ({
+          tabBarStyle: {
+            display: getTabBarVisibility(route),
+            backgroundColor: Colors.primary,
+          },
           tabBarIcon: ({color, size}) => (
             <Image
               source={{
@@ -52,7 +50,7 @@ const TabNavigation = () => {
               style={{width: size, height: size, tintColor: color}}
             />
           ),
-        }}
+        })}
       />
     </Tab.Navigator>
   );
@@ -60,7 +58,14 @@ const TabNavigation = () => {
 
 const getTabBarVisibility = route => {
   const routeName = getFocusedRouteNameFromRoute(route);
-  return routeName === 'Detail' ? 'none' : 'flex';
+  if (
+    routeName === 'Detail' ||
+    routeName === 'Login' ||
+    routeName === 'Signup'
+  ) {
+    return 'none';
+  }
+  return 'flex';
 };
 
 export default TabNavigation;

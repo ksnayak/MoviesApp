@@ -1,8 +1,8 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import Colors from '../configs/Color';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Colors from '../../configs/Color';
 
-const NotLogin = ({navigation}) => {
+const NotLoggedin = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>Let's get started now!</Text>
@@ -18,30 +18,30 @@ const NotLogin = ({navigation}) => {
       <TouchableOpacity
         onPress={() => navigation.navigate('Signup')}
         style={styles.signupBtnContainer}>
-        <Text style={[styles.btnText, {color: Colors.tertiary}]}>Sign up</Text>
+        <Text style={[styles.btnText, {color: Colors.primary}]}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default NotLogin;
+export default NotLoggedin;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
   titleText: {
-    color: Colors.white,
+    color: Colors.primary,
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
   },
   subtitleText: {
-    color: Colors.white,
+    color: Colors.primary,
     fontSize: 16,
     marginBottom: 50,
     textAlign: 'center',
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 20,
     borderRadius: 10,
-    backgroundColor: Colors.tertiary,
+    backgroundColor: Colors.primary,
   },
   signupBtnContainer: {
     width: '80%',
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: Colors.tertiary,
+    borderColor: Colors.primary,
   },
   btnText: {
     color: Colors.white,

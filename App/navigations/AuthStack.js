@@ -2,10 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 
-import NotLogin from '../screens/NotLogin';
-import Login from '../screens/Login';
-import Signup from '../screens/Signup';
+import NotLoggedin from '../screens/Login/NotLoggedin';
+import Login from '../screens/Login/Login';
+import Signup from '../screens/Login/Signup';
 import Profile from '../screens/Profile';
+
+import Navbar from '../components/NavBar';
 
 const Stack = createStackNavigator();
 
@@ -20,10 +22,30 @@ const SignedInStack = () => (
 );
 
 const SignedOutStack = () => (
-  <Stack.Navigator initialRouteName="NotLogin" screenOptions={screenOptions}>
-    <Stack.Screen name="NotLogin" component={NotLogin} />
-    <Stack.Screen name="Login" component={Login} />
-    <Stack.Screen name="Signup" component={Signup} />
+  <Stack.Navigator initialRouteName="NotLoggedin">
+    <Stack.Screen
+      name="NotLoggedin"
+      component={NotLoggedin}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="Login"
+      component={Login}
+      options={{
+        headerTransparent: true,
+        header: ({navigation}) => <Navbar navigation={navigation} />,
+      }}
+    />
+    <Stack.Screen
+      name="Signup"
+      component={Signup}
+      options={{
+        headerTransparent: true,
+        header: ({navigation}) => <Navbar navigation={navigation} />,
+      }}
+    />
   </Stack.Navigator>
 );
 

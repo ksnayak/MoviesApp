@@ -18,21 +18,26 @@ const propTypes = {
 
 const defaultProps = {
   main: false,
+  name: '',
 };
 
 class Navbar extends React.PureComponent {
   render() {
-    const {navigation, main} = this.props;
+    const {navigation, main, name} = this.props;
+
     return (
       <SafeAreaView>
         {main ? (
-          <View style={styles.mainNav}>
+          <View style={styles.mainNav(main)}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Image
                 style={styles.logo}
                 source={require('../assets/images/movies.png')}
               />
-              <Text style={styles.greetingText}>Hello</Text>
+              <Text style={styles.greetingText}>
+                Hello{' '}
+                <Text style={{fontSize: 15, fontWeight: '400'}}>{name}</Text>
+              </Text>
             </View>
             <TouchableOpacity
               onPress={() => {
@@ -51,7 +56,7 @@ class Navbar extends React.PureComponent {
               onPress={() => {
                 navigation.goBack();
               }}>
-              <Icon name={'chevron-back'} size={40} color={Colors.lightGray} />
+              <Icon name={'chevron-back'} size={35} color={Colors.lightGray} />
             </TouchableOpacity>
           </View>
         )}
@@ -62,21 +67,25 @@ class Navbar extends React.PureComponent {
 
 const styles = StyleSheet.create({
   logo: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
   },
-  mainNav: {
-    flex: 1,
+  mainNav: main => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
     alignItems: 'center',
-  },
+    padding: main ? 5 : 10,
+    alignItems: 'center',
+    backgroundColor: main ? Colors.primary : Colors.lightGray,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.lightGray,
+  }),
   greetingText: {
-    fontSize: 30,
-    fontWeight: '600',
-    color: Colors.tertiary,
+    textAlign: 'center',
+    fontSize: 22,
     marginLeft: 20,
+    fontWeight: '600',
+    color: Colors.white,
   },
 });
 

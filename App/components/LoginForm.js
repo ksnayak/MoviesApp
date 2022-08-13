@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -58,13 +58,13 @@ const LoginForm = ({navigation}) => {
                 {
                   borderColor:
                     values.email.length < 1 || Validator.validate(values.email)
-                      ? '#ccc'
-                      : 'red',
+                      ? Colors.lightGray
+                      : Colors.danger,
                 },
               ]}>
               <TextInput
                 placeholder="Phone number, username or email"
-                placeholderTextColor={'#444'}
+                placeholderTextColor={Colors.placeholder}
                 autoCapitalize="none"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -80,13 +80,13 @@ const LoginForm = ({navigation}) => {
                 {
                   borderColor:
                     1 > values.password.length || values.password.length >= 6
-                      ? '#ccc'
-                      : 'red',
+                      ? Colors.lightGray
+                      : Colors.danger,
                 },
               ]}>
               <TextInput
                 placeholder="Password"
-                placeholderTextColor={'#444'}
+                placeholderTextColor={Colors.placeholder}
                 autoCapitalize="none"
                 autoCorrect={false}
                 secureTextEntry={true}

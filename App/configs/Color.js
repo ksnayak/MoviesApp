@@ -7,6 +7,7 @@ const Colors = {
   background: '#1E1E1E',
   danger: '#F5365C',
   black: '#000000',
+  placeholder: '#444',
 };
 
 export default Colors;
