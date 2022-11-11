@@ -1,18 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   Dimensions,
   ScrollView,
+  SafeAreaView,
   ActivityIndicator,
+  Animated,
   Image,
 } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import {useFocusEffect} from '@react-navigation/native';
 
+import Navbar from '../components/NavBar';
 import Error from '../components/Error';
 import List from '../components/List';
 import Colors from '../configs/Color';
+import {STYLES} from '../configs/Constants';
 import {
   getPopularMovies,
   getUpComingMovies,
@@ -42,9 +48,39 @@ const Home = ({navigation}) => {
   const [horrorMovies, setHorrorMovies] = useState();
   const [romanceMovies, setRomanceMovies] = useState();
   const [scienceFictionMovies, setScienceFictionMovies] = useState();
+  const [currentLogInUser, setCurrentLogInUser] = useState('');
 
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
+
+  const scrollY = new Animated.Value(0);
+  const diffClamp = Animated.diffClamp(scrollY, 0, 50);
+  const translateY = diffClamp.interpolate({
+    inputRange: [0, 50],
+    outputRange: [0, -50],
+  });
+
+  const getUserName = () => {
+    const user = auth().currentUser;
+    // console.log('user', user);
+    if (user) {
+      const unsubscribe = firestore()
+        .collection('users')
+        .where('owner_uid', '==', user?.uid)
+        .limit(1)
+        .onSnapshot(snapshot =>
+          snapshot.docs.map(doc => {
+            setCurrentLogInUser({
+              username: doc.data().username,
+            });
+          }),
+        );
+      console.log('currentUser', currentLogInUser);
+      return unsubscribe;
+    } else {
+      setCurrentLogInUser('');
+    }
+  };
 
   const getData = () => {
     return Promise.all([
@@ -103,10 +139,24 @@ const Home = ({navigation}) => {
       });
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      getUserName();
+    }, []),
+  );
+
   return (
-    <View>
+    <SafeAreaView style={STYLES.AndroidSafeArea}>
+      <Animated.View style={[styles.navbar, {transform: [{translateY}]}]}>
+        <Navbar
+          navigation={navigation}
+          main={true}
+          name={currentLogInUser.username}
+        />
+      </Animated.View>
       {loaded && !error && (
-        <ScrollView>
+        <ScrollView
+          onScroll={e => scrollY.setValue(e.nativeEvent.contentOffset.y)}>
           {moviesImages && (
             <View style={styles.sliderContainer}>
               <Carousel
@@ -220,7 +270,7 @@ const Home = ({navigation}) => {
       )}
       {!loaded && <ActivityIndicator size={'large'} />}
       {error && <Error />}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -241,6 +291,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  navbar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    elevation: 100,
   },
 });
 
