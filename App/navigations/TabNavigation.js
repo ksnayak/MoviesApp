@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeStack from './HomeStack';
 import AuthStack from './AuthStack';
 import Colors from '../configs/Color';
+import FavoritesScreen from '../screens/FavoritesScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +22,20 @@ const screenOptions = {
 const TabNavigation = () => {
   return (
     <Tab.Navigator initialRouteName="Home" screenOptions={screenOptions}>
+      <Tab.Screen
+        name="Favorite"
+        component={FavoritesScreen}
+        options={({route}) => ({
+          tabBarStyle: {
+            display: getTabBarVisibility(route),
+            backgroundColor: Colors.primary,
+          },
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name="ios-star-outline" color={color} size={size} />
+          ),
+        })}
+      />
+
       <Tab.Screen
         name="main"
         component={HomeStack}
