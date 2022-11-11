@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 
 import Colors from '../configs/Color';
+import {STYLES} from '../configs/Constants';
 
 const propTypes = {
   main: PropTypes.bool,
@@ -26,7 +27,7 @@ class Navbar extends React.PureComponent {
     const {navigation, main, name} = this.props;
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style={STYLES.AndroidSafeArea}>
         {main ? (
           <View style={styles.mainNav(main)}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
