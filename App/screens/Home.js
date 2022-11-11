@@ -13,6 +13,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
 
 import Navbar from '../components/NavBar';
 import Error from '../components/Error';
@@ -33,25 +34,49 @@ import {
   getRomanceMovies,
   getScienceFictionMovies,
 } from '../services/services';
+import {
+  getUpComingMoviesAction,
+  getActionMoviesAction,
+  getAnimationMoviesAction,
+  getComedyMoviesAction,
+  getDocumentaryMoviesAction,
+  getFamilyMoviesAction,
+  getFantasyMoviesAction,
+  getHorrorMoviesAction,
+  getPopularMoviesAction,
+  getPopularTvAction,
+  getRomanceMoviesAction,
+  getScienceFictionMoviesAction,
+} from '../store/Home';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Text} from 'react-native';
 
 const dimensions = Dimensions.get('screen');
 const Home = ({navigation}) => {
   const [moviesImages, setMoviesImages] = useState([]);
-  const [popularMovies, setPopularMovies] = useState();
-  const [popularTv, setPopularTv] = useState();
-  const [actionMovies, setActionMovies] = useState();
-  const [animationMovies, setAnimationMovies] = useState();
-  const [comedyMovies, setComedyMovies] = useState();
-  const [documentaryMovies, setDocumentaryMovies] = useState();
-  const [familyMovies, setFamilyMovies] = useState();
-  const [fantasyMovies, setFantasyMovies] = useState();
-  const [horrorMovies, setHorrorMovies] = useState();
-  const [romanceMovies, setRomanceMovies] = useState();
-  const [scienceFictionMovies, setScienceFictionMovies] = useState();
   const [currentLogInUser, setCurrentLogInUser] = useState('');
 
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
+
+  const upcomingMoviesData = useSelector(state => state.Home.upComingMovieData);
+  const popularMoviesData = useSelector(state => state.Home.popularMovies);
+  const popularTvData = useSelector(state => state.Home.popularTv);
+  const actionMoviesData = useSelector(state => state.Home.actionMovies);
+  const animationMoviesData = useSelector(state => state.Home.animationMovies);
+  const comedyMoviesData = useSelector(state => state.Home.comedyMovies);
+  const documentaryMoviesData = useSelector(
+    state => state.Home.documentaryMovies,
+  );
+  const familyMoviesData = useSelector(state => state.Home.familyMovies);
+  const fantasyMoviesData = useSelector(state => state.Home.fantasyMovies);
+  const horrorMoviesData = useSelector(state => state.Home.horrorMovies);
+  const romanceMoviesData = useSelector(state => state.Home.romanceMovies);
+  const scienceFictionMoviesData = useSelector(
+    state => state.Home.scienceFictionMovies,
+  );
+
+  const dispatch = useDispatch();
 
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 50);
@@ -59,6 +84,45 @@ const Home = ({navigation}) => {
     inputRange: [0, 50],
     outputRange: [0, -50],
   });
+
+  const getDispatchData = async () => {
+    try {
+      dispatch(getUpComingMoviesAction());
+      dispatch(getPopularMoviesAction());
+      dispatch(getPopularTvAction());
+      dispatch(getActionMoviesAction());
+      dispatch(getAnimationMoviesAction());
+      dispatch(getComedyMoviesAction());
+      dispatch(getDocumentaryMoviesAction());
+      dispatch(getFamilyMoviesAction());
+      dispatch(getFantasyMoviesAction());
+      dispatch(getHorrorMoviesAction());
+      dispatch(getRomanceMoviesAction());
+      dispatch(getScienceFictionMoviesAction());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDispatchData();
+    setLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    getupComingMovies();
+  }, [upcomingMoviesData]);
+
+  const getupComingMovies = () => {
+    const moviesImagesArray = [];
+    upcomingMoviesData?.forEach(movie => {
+      moviesImagesArray.push({
+        id: movie.id,
+        image: 'https://image.tmdb.org/t/p/w500' + movie.poster_path,
+      });
+    });
+    setMoviesImages(moviesImagesArray);
+  };
 
   const getUserName = () => {
     const user = auth().currentUser;
@@ -81,63 +145,6 @@ const Home = ({navigation}) => {
       setCurrentLogInUser('');
     }
   };
-
-  const getData = () => {
-    return Promise.all([
-      getUpComingMovies(),
-      getPopularMovies(),
-      getActionMovies(),
-      getAnimationMovies(),
-      getComedyMovies(),
-      getDocumentaryMovies(),
-      getFamilyMovies(),
-      getFantasyMovies(),
-      getHorrorMovies(),
-      getRomanceMovies(),
-      getScienceFictionMovies(),
-    ]);
-  };
-
-  useEffect(() => {
-    getData()
-      .then(
-        ([
-          upcomingMoviesData,
-          popularMoviesData,
-          actionMoviesData,
-          animationMoviesData,
-          comedyMoviesData,
-          documentaryMoviesData,
-          familyMoviesData,
-          fantasyMoviesData,
-          horrorMoviesData,
-          romanceMoviesData,
-          ScienceFictionMoviesData,
-        ]) => {
-          const moviesImagesArray = [];
-          upcomingMoviesData.forEach(movie => {
-            moviesImagesArray.push(
-              'https://image.tmdb.org/t/p/w500' + movie.poster_path,
-            );
-          });
-          setMoviesImages(moviesImagesArray);
-          setPopularMovies(popularMoviesData);
-          setActionMovies(actionMoviesData);
-          setAnimationMovies(animationMoviesData);
-          setComedyMovies(comedyMoviesData);
-          setDocumentaryMovies(documentaryMoviesData);
-          setFamilyMovies(familyMoviesData);
-          setFantasyMovies(fantasyMoviesData);
-          setHorrorMovies(horrorMoviesData);
-          setRomanceMovies(romanceMoviesData);
-          setScienceFictionMovies(ScienceFictionMoviesData);
-          setLoaded(true);
-        },
-      )
-      .catch(() => {
-        setError(true);
-      });
-  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -167,7 +174,7 @@ const Home = ({navigation}) => {
                 width={Math.round(dimensions.width)}
                 renderItem={({item}) => (
                   <Image
-                    source={{uri: item}}
+                    source={{uri: item.image}}
                     resizeMode="cover"
                     style={{width: '100%', height: '100%'}}
                   />
@@ -175,94 +182,94 @@ const Home = ({navigation}) => {
               />
             </View>
           )}
-          {popularMovies && (
+          {popularMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Popular Movies"
-                content={popularMovies}
+                content={popularMoviesData}
               />
             </View>
           )}
-          {actionMovies && (
+          {actionMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Action Movies"
-                content={actionMovies}
+                content={actionMoviesData}
               />
             </View>
           )}
-          {animationMovies && (
+          {animationMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Animation Movies"
-                content={animationMovies}
+                content={animationMoviesData}
               />
             </View>
           )}
-          {comedyMovies && (
+          {comedyMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Comedy Movies"
-                content={comedyMovies}
+                content={comedyMoviesData}
               />
             </View>
           )}
-          {documentaryMovies && (
+          {documentaryMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Documentary Movies"
-                content={documentaryMovies}
+                content={documentaryMoviesData}
               />
             </View>
           )}
-          {familyMovies && (
+          {familyMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Family Movies"
-                content={familyMovies}
+                content={familyMoviesData}
               />
             </View>
           )}
-          {fantasyMovies && (
+          {fantasyMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Fantasy Movies"
-                content={fantasyMovies}
+                content={fantasyMoviesData}
               />
             </View>
           )}
-          {horrorMovies && (
+          {horrorMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Horror Movies"
-                content={horrorMovies}
+                content={horrorMoviesData}
               />
             </View>
           )}
-          {romanceMovies && (
+          {romanceMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Romance Movies"
-                content={romanceMovies}
+                content={romanceMoviesData}
               />
             </View>
           )}
 
-          {scienceFictionMovies && (
+          {scienceFictionMoviesData && (
             <View style={styles.carousel}>
               <List
                 navigation={navigation}
                 title="Science Fiction Movies"
-                content={scienceFictionMovies}
+                content={scienceFictionMoviesData}
               />
             </View>
           )}
