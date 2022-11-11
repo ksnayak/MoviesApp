@@ -21,7 +21,7 @@ const screenOptions = {
 
 const TabNavigation = () => {
   return (
-    <Tab.Navigator initialRouteName="Home" screenOptions={screenOptions}>
+    <Tab.Navigator initialRouteName="main" screenOptions={screenOptions}>
       <Tab.Screen
         name="Favorite"
         component={FavoritesScreen}
