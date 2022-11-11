@@ -3,7 +3,7 @@ import axios from 'axios';
 const apiUrl = 'https://api.themoviedb.org/3';
 const apiKey = 'api_key=9261476128d4f3461d31585110237cc7';
 
-// Get Populer Movies
+// Get Popular Movies
 export const getPopularMovies = async () => {
   const resp = await axios.get(`${apiUrl}/movie/popular?${apiKey}`);
   return resp.data.results;
@@ -29,7 +29,7 @@ export const getFamilyMovies = async () => {
   return resp.data.results;
 };
 
-// Get Docoumentrary Movies
+// Get Documentary Movies
 export const getDocumentaryMovies = async () => {
   const resp = await axios.get(
     `${apiUrl}/discover/movie?${apiKey}&with_genres=99`,
@@ -102,6 +102,38 @@ export const getMovies = async id => {
 export const searchMovieTv = async (query, type) => {
   const resp = await axios.get(
     `${apiUrl}/search/${type}?${apiKey}&query=${query}`,
+  );
+  return resp.data.results;
+};
+
+// Get Videos for Movie or TV by ID
+export const getVideos = async (id, type) => {
+  const resp = await axios.get(
+    `${apiUrl}/${type}/${id}/videos?${apiKey}&language=en-US`,
+  );
+  return resp.data.results;
+};
+
+// Get Cast for Movie or TV by ID
+export const getCast = async (id, type) => {
+  const resp = await axios.get(
+    `${apiUrl}/${type}/${id}/credits?${apiKey}&language=en-US`,
+  );
+  return resp.data.cast;
+};
+
+// Get Similar Movies or TV by ID
+export const getSimilar = async (id, type) => {
+  const resp = await axios.get(
+    `${apiUrl}/${type}/${id}/similar?${apiKey}&language=en-US`,
+  );
+  return resp.data.results;
+};
+
+// Get Reviews for Movie or TV by ID
+export const getReviews = async (id, type) => {
+  const resp = await axios.get(
+    `${apiUrl}/${type}/${id}/reviews?${apiKey}&language=en-US`,
   );
   return resp.data.results;
 };
