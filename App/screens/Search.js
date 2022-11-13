@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  SafeAreaView,
   StyleSheet,
   TextInput,
   View,
@@ -13,6 +14,7 @@ import {searchMovieTv} from '../services/services';
 import Card from '../components/Card';
 import Error from '../components/Error';
 import Colors from '../configs/Color';
+import {STYLES} from '../configs/Constants';
 
 const Search = ({navigation}) => {
   const [text, onChangeText] = useState();
@@ -31,13 +33,13 @@ const Search = ({navigation}) => {
   };
 
   return (
-    <React.Fragment>
+    <SafeAreaView style={STYLES.AndroidSafeArea}>
       <View style={styles.container}>
         <View style={styles.form}>
           <TextInput
             style={styles.input}
-            placeholder={'Search Movie or TV Show'}
-            placeholderTextColor={Colors.black}
+            placeholder="Search Movie or TV Show"
+            placeholderTextColor={Colors.white}
             onChangeText={onChangeText}
             onSubmitEditing={() => onSubmit(text)}
             value={text}
@@ -47,7 +49,7 @@ const Search = ({navigation}) => {
           onPress={() => {
             onSubmit(text);
           }}>
-          <Icon name={'search-outline'} size={30} color={Colors.black} />
+          <Icon name="search-outline" size={30} color={Colors.white} />
         </TouchableOpacity>
       </View>
 
@@ -82,14 +84,14 @@ const Search = ({navigation}) => {
         {/* Error */}
         {error && <Error />}
       </View>
-    </React.Fragment>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   input: {
-    color: Colors.black,
-    borderColor: Colors.black,
+    color: Colors.white,
+    borderColor: Colors.white,
     borderRadius: 15,
     borderWidth: 1,
     height: 50,
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   text: {
-    color: 'black',
+    color: Colors.white,
     textAlign: 'center',
     padding: 5,
     fontSize: 18,

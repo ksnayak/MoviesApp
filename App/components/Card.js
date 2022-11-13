@@ -14,8 +14,10 @@ class Card extends React.PureComponent {
     return (
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate('Detail', {
-            movieId: item.id,
+          // navigation.navigate('Root', { screen: 'Profile' });
+          navigation.navigate('DetailStack', {
+            screen: 'Detail',
+            params: {movieId: item.id},
           })
         }
         style={styles.container}>

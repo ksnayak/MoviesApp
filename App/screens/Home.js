@@ -20,20 +20,7 @@ import Error from '../components/Error';
 import List from '../components/List';
 import Colors from '../configs/Color';
 import {STYLES} from '../configs/Constants';
-import {
-  getPopularMovies,
-  getUpComingMovies,
-  // getPopularTv,
-  getActionMovies,
-  getAnimationMovies,
-  getComedyMovies,
-  getDocumentaryMovies,
-  getFamilyMovies,
-  getFantasyMovies,
-  getHorrorMovies,
-  getRomanceMovies,
-  getScienceFictionMovies,
-} from '../services/services';
+
 import {
   getUpComingMoviesAction,
   getActionMoviesAction,
@@ -48,8 +35,6 @@ import {
   getRomanceMoviesAction,
   getScienceFictionMoviesAction,
 } from '../store/Home';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Text} from 'react-native';
 
 const dimensions = Dimensions.get('screen');
 const Home = ({navigation}) => {
@@ -85,6 +70,21 @@ const Home = ({navigation}) => {
     outputRange: [0, -50],
   });
 
+  useEffect(() => {
+    getDispatchData();
+    setLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    getupComingMovies();
+  }, [upcomingMoviesData]);
+
+  useFocusEffect(
+    useCallback(() => {
+      getUserName();
+    }, []),
+  );
+
   const getDispatchData = async () => {
     try {
       dispatch(getUpComingMoviesAction());
@@ -102,26 +102,6 @@ const Home = ({navigation}) => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  useEffect(() => {
-    getDispatchData();
-    setLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    getupComingMovies();
-  }, [upcomingMoviesData]);
-
-  const getupComingMovies = () => {
-    const moviesImagesArray = [];
-    upcomingMoviesData?.forEach(movie => {
-      moviesImagesArray.push({
-        id: movie.id,
-        image: 'https://image.tmdb.org/t/p/w500' + movie.poster_path,
-      });
-    });
-    setMoviesImages(moviesImagesArray);
   };
 
   const getUserName = () => {
@@ -146,11 +126,16 @@ const Home = ({navigation}) => {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      getUserName();
-    }, []),
-  );
+  const getupComingMovies = () => {
+    const moviesImagesArray = [];
+    upcomingMoviesData?.forEach(movie => {
+      moviesImagesArray.push({
+        id: movie.id,
+        image: 'https://image.tmdb.org/t/p/w500' + movie.poster_path,
+      });
+    });
+    setMoviesImages(moviesImagesArray);
+  };
 
   return (
     <SafeAreaView style={STYLES.AndroidSafeArea}>
@@ -163,7 +148,8 @@ const Home = ({navigation}) => {
       </Animated.View>
       {loaded && !error && (
         <ScrollView
-          onScroll={e => scrollY.setValue(e.nativeEvent.contentOffset.y)}>
+          onScroll={e => scrollY.setValue(e.nativeEvent.contentOffset.y)}
+          showsVerticalScrollIndicator={false}>
           {moviesImages && (
             <View style={styles.sliderContainer}>
               <Carousel
@@ -275,7 +261,12 @@ const Home = ({navigation}) => {
           )}
         </ScrollView>
       )}
-      {!loaded && <ActivityIndicator size={'large'} />}
+      {!loaded && (
+        <ActivityIndicator
+          size="large"
+          style={STYLES.activityIndicatorContainer}
+        />
+      )}
       {error && <Error />}
     </SafeAreaView>
   );

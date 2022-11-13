@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+
 import Colors from '../../configs/Color';
 
 const NotLoggedin = ({navigation}) => {
@@ -18,7 +19,7 @@ const NotLoggedin = ({navigation}) => {
       <TouchableOpacity
         onPress={() => navigation.navigate('Signup')}
         style={styles.signupBtnContainer}>
-        <Text style={[styles.btnText, {color: Colors.primary}]}>Sign up</Text>
+        <Text style={[styles.btnText, {color: Colors.white}]}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -29,19 +30,19 @@ export default NotLoggedin;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    // backgroundColor: Colors.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
   titleText: {
-    color: Colors.primary,
+    color: Colors.white,
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
   },
   subtitleText: {
-    color: Colors.primary,
+    color: Colors.white,
     fontSize: 16,
     marginBottom: 50,
     textAlign: 'center',
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 20,
     borderRadius: 10,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.white,
   },
   signupBtnContainer: {
     width: '80%',
@@ -59,10 +60,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: Colors.primary,
+    borderColor: Colors.white,
   },
   btnText: {
-    color: Colors.white,
+    color: Colors.primary,
     fontSize: 20,
     fontWeight: '500',
     fontStyle: 'italic',
