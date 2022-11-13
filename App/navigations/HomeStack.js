@@ -5,6 +5,7 @@ import Navbar from '../components/NavBar';
 import Home from '../screens/Home';
 import Detail from '../screens/Detail';
 import Search from '../screens/Search';
+import VideoPlayer from '../screens/VideoPlayer';
 
 const Stack = createStackNavigator();
 
@@ -19,11 +20,12 @@ const HomeStack = ({route}) => {
         }}
       />
       <Stack.Screen
-        name="Detail"
-        component={Detail}
+        name="DetailStack"
+        component={DetailStack}
         options={{
-          headerTransparent: true,
-          header: ({navigation}) => <Navbar navigation={navigation} />,
+          headerShown: false,
+          // headerTransparent: true,
+          // header: ({navigation}) => <Navbar navigation={navigation} />,
         }}
       />
       <Stack.Screen
@@ -32,6 +34,30 @@ const HomeStack = ({route}) => {
         options={{
           headerTransparent: true,
           header: ({navigation}) => <Navbar navigation={navigation} />,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const DetailStack = () => {
+  return (
+    <Stack.Navigator initialRouteName="Detail">
+      <Stack.Screen
+        name="Detail"
+        component={Detail}
+        options={{
+          headerTransparent: true,
+          header: ({navigation}) => <Navbar navigation={navigation} />,
+        }}
+      />
+      <Stack.Screen
+        name="VideoPlayer"
+        component={VideoPlayer}
+        options={{
+          headerShown: false,
+          // headerTransparent: true,
+          // header: ({navigation}) => <Navbar navigation={navigation} />,
         }}
       />
     </Stack.Navigator>

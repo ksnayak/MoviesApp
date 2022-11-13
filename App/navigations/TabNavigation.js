@@ -22,7 +22,7 @@ const screenOptions = {
 const TabNavigation = () => {
   return (
     <Tab.Navigator initialRouteName="main" screenOptions={screenOptions}>
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Favorite"
         component={FavoritesScreen}
         options={({route}) => ({
@@ -34,8 +34,7 @@ const TabNavigation = () => {
             <Ionicons name="ios-star-outline" color={color} size={size} />
           ),
         })}
-      />
-
+      /> */}
       <Tab.Screen
         name="main"
         component={HomeStack}
@@ -72,9 +71,9 @@ const TabNavigation = () => {
 };
 
 const getTabBarVisibility = route => {
-  const routeName = getFocusedRouteNameFromRoute(route);
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'main';
   if (
-    routeName === 'Detail' ||
+    routeName === 'DetailStack' ||
     routeName === 'Login' ||
     routeName === 'Signup'
   ) {

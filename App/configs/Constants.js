@@ -18,6 +18,11 @@ export const STYLES = StyleSheet.create({
     //backgroundColor: '#ffffff',
     // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
+  activityIndicatorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 const appTheme = {SIZES, STYLES};
